@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DevHub - Your Web Dev Learning Compass</title>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <style>
+        :root {
+            --bg-color: #121212;
+            --primary-color: #1a1a1a;
+            --secondary-color: #242424;
+            --accent-color: #00bfff; /* Deep Sky Blue */
+            --text-color: #e0e0e0;
+            --heading-color: #ffffff;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Poppins', sans-serif;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        #background-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 5%;
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 100;
+        }
+        .logo { color: var(--heading-color); font-size: 1.5rem; font-weight: 700; text-decoration: none; cursor: pointer; }
+        .nav-links { display: flex; list-style: none; }
+        .nav-links li { padding: 0 1rem; }
+        .nav-links a { 
+            position: relative; /* For the underline effect */
+            color: var(--text-color); 
+            text-decoration: none; 
+            font-weight: 600; 
+            transition: color 0.3s ease; 
+            cursor: pointer;
+            padding-bottom: 5px; /* Space for underline */
+        }
+        .nav-links a::after { /* The underline effect */
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: var(--accent-color);
+            transition: width 0.3s ease;
+        }
+        .nav-links a:hover::after, .nav-links a.active-link::after {
+            width: 100%; /* Show underline on hover or when active */
+        }
+        .nav-links a.active-link {
+            color: var(--accent-color); /* Style for the active link */
+        }
+        .hamburger { display: none; cursor: pointer; }
+        .hamburger .line { width: 25px; height: 3px; background: var(--heading-color); margin: 5px; transition: all 0.3s ease; }
+        .hero { min-height: 100vh; display: flex; justify-content: center; align-items: center; text-align: center; padding: 0 2rem; }
+        .hero-content h1 { font-size: 3.5rem; color: var(--heading-color); text-shadow: 2px 2px 10px rgba(0,0,0,0.5); }
+        .hero-content p { font-size: 1.2rem; max-width: 600px; margin: 1rem auto; }
+        .cta-button { display: inline-block; background: var(--accent-color); color: var(--heading-color); padding: 12px 24px; border-radius: 5px; text-decoration: none; font-weight: 700; margin-top: 1.5rem; transition: transform 0.3s ease, box-shadow 0.3s ease; cursor: pointer; border: none;}
+        .cta-button:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0, 191, 255, 0.3); }
+        h2 { font-size: 2.5rem; color: var(--heading-color); margin-bottom: 3rem; text-align: center;}
+        
+        .content-section {
+            display: none;
+            padding: 8rem 5% 4rem;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        
+        /* About Section */
+        .about-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; margin-top: 3rem; }
+        .about-card { background: var(--secondary-color); padding: 2.5rem 2rem; text-align: center; border-radius: 10px; }
+        .about-card i { font-size: 3rem; color: var(--accent-color); margin-bottom: 1rem; }
+        .about-card h3 { color: var(--heading-color); margin-bottom: 0.5rem; }
+        
+        /* Resources Section */
+        .resource-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; }
+        .resource-card { background: var(--secondary-color); padding: 2rem; border-radius: 10px; text-align: left; transition: transform 0.3s ease, box-shadow 0.3s ease; border-left: 5px solid var(--accent-color); }
+        .resource-card:hover { transform: translateY(-10px); box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5); }
+        .resource-card h3 { color: var(--heading-color); margin-bottom: 1rem; }
+        .card-link { display: inline-block; color: var(--accent-color); text-decoration: none; font-weight: 600; margin-top: 1.5rem; }
+        
+        /* Project Cards */
+        .project-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2rem; }
+        .project-card { background: var(--secondary-color); border-radius: 10px; overflow: hidden; display: flex; flex-direction: column; text-align: left; box-shadow: 0 10px 30px rgba(0,0,0,0.3); transition: transform 0.3s ease; }
+        .project-card:hover { transform: translateY(-10px); }
+        .project-image img { width: 100%; height: auto; display: block; transition: transform 0.5s ease; }
+        .project-card:hover .project-image img { transform: scale(1.05); }
+        .project-info { padding: 1.5rem; flex-grow: 1; display: flex; flex-direction: column; }
+        .project-info h3 { color: var(--heading-color); margin-bottom: 0.5rem; }
+        .project-info p { flex-grow: 1; margin-bottom: 1.5rem; }
+        .project-links { margin-top: auto; }
+        .project-btn-single { width: 100%; text-align: center; padding: 10px 15px; border: 2px solid var(--accent-color); color: var(--accent-color); background: transparent; border-radius: 5px; text-decoration: none; font-weight: 600; transition: background-color 0.3s ease, color 0.3s ease; }
+        .project-btn-single:hover { background-color: var(--accent-color); color: var(--heading-color); }
+        .project-btn-single i { margin-right: 8px; }
+        
+        /* Online Class Section */
+        .online-class-section { display: flex; flex-wrap: wrap; gap: 2rem; align-items: center; }
+        .flyer-content, .form-container { flex: 1 1 400px; }
+        .flyer-content h2 { font-size: 2.8rem; color: var(--accent-color); text-align: left; margin-bottom: 0.5rem; }
+        .flyer-content h3 { color: var(--heading-color); font-size: 1.5rem; margin-bottom: 1.5rem; text-align: left; }
+        .flyer-content ul { list-style: none; margin-top: 1.5rem; }
+        .flyer-content li { margin-bottom: 0.5rem; font-size: 1.1rem; }
+        .flyer-content li i { color: var(--accent-color); margin-right: 10px; }
+        .form-container { background: var(--secondary-color); padding: 2.5rem; border-radius: 10px; }
+        .form-container h3 { color: var(--heading-color); margin-bottom: 1rem; text-align: center;}
+        .form-container p { text-align: center; margin-bottom: 2rem;}
+        .form-group { margin-bottom: 1.5rem; }
+        .form-group label { display: block; margin-bottom: 0.5rem; font-weight: 600; }
+        .form-group input { width: 100%; padding: 12px; border-radius: 5px; border: 1px solid #555; background: var(--primary-color); color: var(--text-color); font-size: 1rem; }
+        
+        /* Contact Section */
+        .contact-section p { max-width: 500px; margin: 0 auto 2rem auto; text-align: center; }
+        .social-links { text-align: center; }
+        .social-links a { color: var(--text-color); font-size: 2.5rem; margin: 0 1rem; transition: color 0.3s ease, transform 0.3s ease; }
+        .social-links a:hover { color: var(--accent-color); transform: scale(1.2); }
+        
+        /* Pop-up Styles */
+        .popup { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.9); background: var(--secondary-color); color: var(--heading-color); padding: 2rem 3rem; border-radius: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); z-index: 200; opacity: 0; pointer-events: none; transition: opacity 0.3s ease, transform 0.3s ease; }
+        .popup.active { opacity: 1; transform: translate(-50%, -50%) scale(1); pointer-events: all; }
+        
+        footer { text-align: center; padding: 2rem; background: var(--bg-color); }
+        
+        @media (max-width: 768px) {
+            .nav-links { position: fixed; right: -100%; top: 0; background: var(--primary-color); height: 100vh; width: 60%; flex-direction: column; align-items: center; justify-content: space-evenly; transform: translateX(0); transition: transform 0.5s ease-in-out; }
+            .nav-links.active { right: 0; }
+            .hamburger { display: block; z-index: 200; }
+            .hero-content h1 { font-size: 2.5rem; }
+            .hamburger.toggle .line:nth-child(1) { transform: rotate(-45deg) translate(-5px, 6px); }
+            .hamburger.toggle .line:nth-child(2) { opacity: 0; }
+            .hamburger.toggle .line:nth-child(3) { transform: rotate(45deg) translate(-5px, -6px); }
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="background-canvas"></canvas>
+
+    <div id="welcome-popup" class="popup"><h2>Welcome to DevHub!</h2></div>
+    <div id="thanks-popup" class="popup"><h2>Thanks for being part of DevHub!</h2></div>
+
+    <header>
+        <nav>
+            <a class="logo">DevHub</a>
+            <ul class="nav-links">
+                <li><a data-section="about">About</a></li>
+                <li><a data-section="resources">Resources</a></li>
+                <li><a data-section="projects">Projects</a></li>
+                <li><a data-section="online-class">Online Class</a></li>
+                <li><a data-section="contact">Contact</a></li>
+            </ul>
+            <div class="hamburger">
+                <div class="line"></div><div class="line"></div><div class="line"></div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="hero-content">
+                <h1>Your Journey in Code Starts Here.</h1>
+                <p>A curated collection of the best platforms and tools to master web development, from beginner to pro.</p>
+                <button class="cta-button" data-section="about">Learn More</button>
+            </div>
+        </section>
+
+        <section id="about" class="content-section">
+            <h2>About DevHub</h2>
+            <div class="about-grid">
+                <div class="about-card"><i class="fas fa-bullseye"></i><h3>Our Mission</h3><p>To provide aspiring developers with a clear, curated path to success by centralizing the best learning resources and offering direct support.</p></div>
+                <div class="about-card"><i class="fas fa-eye"></i><h3>Our Vision</h3><p>To build a global community of skilled, confident, and collaborative developers who are prepared for the challenges of the modern tech industry.</p></div>
+                <div class="about-card"><i class="fas fa-map-marker-alt"></i><h3>Our Location</h3><p>We are a fully remote and online community, connecting students and mentors from every corner of the world, 24/7.</p></div>
+            </div>
+        </section>
+
+        <section id="resources" class="content-section">
+            <h2>Learning Paths & Platforms</h2>
+            <div class="resource-grid">
+                <div class="resource-card"><h3>FreeCodeCamp</h3><p>A non-profit with a full curriculum, thousands of hours of content, and certifications. All for free.</p><a href="https://www.freecodecamp.org/" target="_blank" class="card-link">Visit Site</a></div>
+                <div class="resource-card"><h3> W3Schools</h3><p>Well organized and easy to understand Web building tutorials with lots of examples of how to use HTML, CSS, JavaScript, SQL, Python, PHP, Bootstrap, Java, ...</p><a href=" https://www.w3schools.com" target="_blank" class="card-link">Visit Site</a></div>
+                <div class="resource-card"><h3>MDN Web Docs</h3><p>The official documentation for web technologies. The ultimate reference for any web developer.</p><a href="https://developer.mozilla.org/" target="_blank" class="card-link">Visit Site</a></div>
+                <div class="resource-card"> <h3> GeeksforGeeks</h3><p> Your All-in-One Learning Portal. It contains well written, well thought and well explained computer science and programming articles, quizzes and practice/competitive programming/company interview Questions.</p><a href="https://www.geeksforgeeks.org/ " target="_blank" class="card-link">Visit Site</a> </div>
+                <div class="resource-card"><h3>CodeAcademy </h3><p>Codecademy is an American online interactive platform that offers free coding classes in 13 different programming languages including Python, Java, Go, JavaScript, Ruby, SQL, C++, C#, Lua, and Swift, as well as markup languages HTML and CSS.</p> <a href="https://www.googleadservices.com/pagead/aclk?sa=L&ai=DChsSEwjtpbyQ47SOAxWDkVAGHYk6BJoYACICCAEQABoCZGc&co=1&gclid=CjwKCAjw7MLDBhAuEiwAIeXGIT_0LvQAdp7gS1b8NnEynHMiMi6Ouu95cmXZ_5tizS9WotX208MKjBoCjAMQAvD_BwE&ohost=www.google.com&cid=CAESVuD2rkoNYiaK_xFaRMH7LqJeS3lGZHxS9VUYkcENaNBuH1dvhQpKUPzSx2AVwmDHKOcgEGK7SZZwMf1tRzjh-5xiwJgnDMueflByTOwJp9G1d7txmfts&category=acrcp_v1_40&sig=AOD64_1tM7hysbUVwhLlDxcBd2HmDtrw2w&q&adurl&ved=2ahUKEwjjqLiQ47SOAxUAUUEAHR1dOtAQ0Qx6BAgKEAE " target="_blank" class="card-link">Visit Site</a></div>
+                <div class="resource-card"><h3>Kevin Powell (YouTube)</h3><p>A channel dedicated to helping you "fall in love with CSS." Fantastic tutorials and tips.</p><a href="https://www.youtube.com/@KevinPowell" target="_blank" class="card-link">Visit Site</a></div>
+            </div>
+        </section>
+
+        <section id="projects" class="content-section">
+            <h2>My Recent Work</h2>
+            <div class="project-grid">
+                <div class="project-card"><div class="project-image"><img src="https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?auto=format&fit=crop&w=1600&q=80" alt="Project One Screenshot"></div><div class="project-info"><h3>(The Quiz Hub)</h3><p>A learning educational webpage for various level of education</p><div class="project-links"><a href="https://pretty49.github.io/my-quiz/" target="_blank" class="project-btn-single"><i class="fas fa-external-link-alt"></i> View Project</a></div></div></div>
+                <div class="project-card"><div class="project-image"><img src="https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?auto=format&fit=crop&w=1600&q=80" alt="Project Two Screenshot"></div><div class="project-info"><h3>(The Nook Library)</h3><p>A poetic library of various poet</p><div class="project-links"><a href="https://pretty49.github.io/my-library/" target="_blank" class="project-btn-single"><i class="fas fa-external-link-alt"></i> View Project</a></div></div></div>
+                <div class="project-card"><div class="project-image"><img src="https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?auto=format&fit=crop&w=1600&q=80" alt="Project Three Screenshot"></div><div class="project-info"><h3>(To-Do-List)</h3><p>An aidind To-Do-List for markerters, Students and Bussiness regulators</p><div class="project-links"><a href="https://pretty49.github.io/todo-app/" target="_blank" class="project-btn-single"><i class="fas fa-external-link-alt"></i> View Project</a></div></div></div>
+            </div>
+        </section>
+
+        <section id="online-class" class="content-section">
+            <div class="online-class-section">
+                <div class="flyer-content">
+                    <h2>Online Classes Available!</h2>
+                    <h3>Ready to Go from Beginner to Pro?</h3>
+                    <p>Join our intensive online bootcamp designed to give you the skills you need. We cover everything from the fundamentals of HTML/CSS to advanced JavaScript frameworks.</p>
+                    <ul>
+                        <li><i class="fas fa-check-circle"></i> Live Mentoring Sessions</li>
+                        <li><i class="fas fa-project-diagram"></i> Real-World Project Building</li>
+                        <li><i class="fas fa-users"></i> Active Student Community</li>
+                    </ul>
+                </div>
+                <div class="form-container">
+                    <h3>Register Your Interest</h3>
+                    <p>Fill out the form below and we'll send you the details!</p>
+                    <form id="interest-form">
+                        <div class="form-group"><label for="name">Full Name</label><input type="text" id="name" name="name" required></div>
+                        <div class="form-group"><label for="phone">Phone Number</label><input type="tel" id="phone" name="phone" required></div>
+                        <div class="form-group"><label for="age">Age</label><input type="number" id="age" name="age" required></div>
+                        <div class="form-group"><label for="country">Country</label><input type="text" id="country" name="country" required></div>
+                        <button type="submit" class="cta-button">I'm Interested!</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="content-section">
+            <h2>Get In Touch</h2>
+            <p>Have questions? Don't hesitate to reach out on any of these platforms!</p>
+            <div class="social-links">
+                <a href="https://www.instagram.com/limscobeauty18" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                <a href="https://www.threads.net/@limscobeauty18" target="_blank" aria-label="Threads"><i class="fab fa-threads"></i></a>
+                <a href="https://wa.me/07049111844" target="_blank" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                <a href="https://www.facebook.com/Halima Masud" target="_blank" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2024 DevHub. Built to help students thrive.</p>
+    </footer>
+    
+    <script>
+        // --- CONFIGURATION ---
+        const myWhatsAppNumber = '2347049111844'; // <-- REPLACE THIS WITH YOUR NUMBER
+
+        // --- DOM ELEMENTS ---
+        const contentSections = document.querySelectorAll('.content-section');
+        const navButtons = document.querySelectorAll('[data-section]');
+        const logoButton = document.querySelector('.logo');
+        const interestForm = document.getElementById('interest-form');
+        const thanksPopup = document.getElementById('thanks-popup');
+        const hamburger = document.querySelector('.hamburger');
+        const navLinks = document.querySelector('.nav-links');
+        const canvas = document.getElementById('background-canvas');
+        const ctx = canvas.getContext('2d');
+
+        // --- STATE ---
+        let animationFrameId;
+
+        // --- FUNCTIONS ---
+        function showSection(sectionId, isInitialLoad = false) {
+            contentSections.forEach(section => { section.style.display = 'none'; });
+            navButtons.forEach(btn => {
+                const link = btn.tagName === 'A' ? btn : btn.querySelector('a');
+                if (link) link.classList.remove('active-link');
+            });
+
+            if (sectionId) {
+                const activeSection = document.getElementById(sectionId);
+                if (activeSection) {
+                    activeSection.style.display = 'block';
+                    // Add active class to the corresponding nav link
+                    const activeLink = document.querySelector(`.nav-links a[data-section="${sectionId}"]`);
+                    if(activeLink) activeLink.classList.add('active-link');
+                }
+            }
+             // Scroll to top of the page when a section is shown, except for the initial load
+            if (!isInitialLoad) {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+
+        function handleNavClick(event) {
+            const sectionId = event.currentTarget.getAttribute('data-section');
+            showSection(sectionId);
+            // Close mobile menu if open
+            navLinks.classList.remove('active');
+            hamburger.classList.remove('toggle');
+        }
+
+        function handleFormSubmit(event) {
+            event.preventDefault();
+            const name = document.getElementById('name').value;
+            const phone = document.getElementById('phone').value;
+            const age = document.getElementById('age').value;
+            const country = document.getElementById('country').value;
+            
+            const message = `Hi! I'm interested in the DevHub online class.%0A%0A*Name:* ${name}%0A*Phone:* ${phone}%0A*Age:* ${age}%0A*Country:* ${country}`;
+            const whatsappURL = `https://wa.me/${myWhatsAppNumber}?text=${encodeURIComponent(message)}`;
+            
+            window.open(whatsappURL, '_blank');
+            
+            thanksPopup.classList.add('active');
+            setTimeout(() => { thanksPopup.classList.remove('active'); }, 3000);
+            interestForm.reset();
+        }
+
+        function showWelcomePopup() {
+            const welcomePopup = document.getElementById('welcome-popup');
+            setTimeout(() => { welcomePopup.classList.add('active'); }, 500);
+            setTimeout(() => { welcomePopup.classList.remove('active'); }, 3500);
+        }
+
+        // --- CANVAS ANIMATION ---
+        let particlesArray;
+        class Particle { /* ... same as before */
+             constructor(x, y, dX, dY, size) { this.x = x; this.y = y; this.directionX = dX; this.directionY = dY; this.size = size; this.hue = Math.random() * 360; }
+            draw() { ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fillStyle = `hsl(${this.hue}, 100%, 50%)`; ctx.fill(); }
+            update() {
+                if (this.x > canvas.width || this.x < 0) { this.directionX = -this.directionX; }
+                if (this.y > canvas.height || this.y < 0) { this.directionY = -this.directionY; }
+                this.x += this.directionX; this.y += this.directionY;
+                this.hue = (this.hue + 1) % 360;
+                this.draw();
+            }
+        }
+        function initCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            particlesArray = [];
+            let num = (canvas.height * canvas.width) / 9000;
+            for (let i = 0; i < num; i++) {
+                let size = (Math.random() * 4) + 1;
+                let x = (Math.random() * (innerWidth - size * 2)) + size;
+                let y = (Math.random() * (innerHeight - size * 2)) + size;
+                let dX = (Math.random() * 0.4) - 0.2;
+                let dY = (Math.random() * 0.4) - 0.2;
+                particlesArray.push(new Particle(x, y, dX, dY, size));
+            }
+        }
+        function animate() {
+            animationFrameId = requestAnimationFrame(animate); 
+            ctx.clearRect(0, 0, innerWidth, innerHeight); 
+            particlesArray.forEach(p => p.update()); 
+        }
+
+        // --- EVENT LISTENERS ---
+        navButtons.forEach(button => button.addEventListener('click', handleNavClick));
+        logoButton.addEventListener('click', () => showSection(null)); // Logo acts as home button
+        interestForm.addEventListener('submit', handleFormSubmit);
+        
+        hamburger.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+            hamburger.classList.toggle('toggle');
+        });
+        
+        window.addEventListener('resize', initCanvas);
+
+        // Professional Upgrade: Pause animation when tab is not visible
+        document.addEventListener("visibilitychange", () => {
+            if (document.hidden) {
+                cancelAnimationFrame(animationFrameId);
+            } else {
+                animate();
+            }
+        });
+
+        // --- INITIALIZATION ---
+        document.addEventListener('DOMContentLoaded', () => {
+            showSection('about', true); // Show 'About' section by default on load
+            showWelcomePopup();
+            initCanvas();
+            animate();
+        });
+
+    </script>
+</body>
+</html>
