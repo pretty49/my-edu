@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -52,15 +52,15 @@
         .nav-links { display: flex; list-style: none; }
         .nav-links li { padding: 0 1rem; }
         .nav-links a { 
-            position: relative; /* For the underline effect */
+            position: relative;
             color: var(--text-color); 
             text-decoration: none; 
             font-weight: 600; 
             transition: color 0.3s ease; 
             cursor: pointer;
-            padding-bottom: 5px; /* Space for underline */
+            padding-bottom: 5px;
         }
-        .nav-links a::after { /* The underline effect */
+        .nav-links a::after {
             content: '';
             position: absolute;
             width: 0;
@@ -71,14 +71,14 @@
             transition: width 0.3s ease;
         }
         .nav-links a:hover::after, .nav-links a.active-link::after {
-            width: 100%; /* Show underline on hover or when active */
+            width: 100%;
         }
         .nav-links a.active-link {
-            color: var(--accent-color); /* Style for the active link */
+            color: var(--accent-color);
         }
         .hamburger { display: none; cursor: pointer; }
         .hamburger .line { width: 25px; height: 3px; background: var(--heading-color); margin: 5px; transition: all 0.3s ease; }
-        .hero { min-height: 100vh; display: flex; justify-content: center; align-items: center; text-align: center; padding: 0 2rem; }
+        .hero { min-height: 100vh; display: flex; justify-content: center; align-items: center; text-align: center; padding: 0 2rem; transition: opacity 0.5s ease-out; }
         .hero-content h1 { font-size: 3.5rem; color: var(--heading-color); text-shadow: 2px 2px 10px rgba(0,0,0,0.5); }
         .hero-content p { font-size: 1.2rem; max-width: 600px; margin: 1rem auto; }
         .cta-button { display: inline-block; background: var(--accent-color); color: var(--heading-color); padding: 12px 24px; border-radius: 5px; text-decoration: none; font-weight: 700; margin-top: 1.5rem; transition: transform 0.3s ease, box-shadow 0.3s ease; cursor: pointer; border: none;}
@@ -90,7 +90,7 @@
             padding: 8rem 5% 4rem;
             animation: fadeIn 0.5s ease-in-out;
         }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
         
         /* About Section */
         .about-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; margin-top: 3rem; }
@@ -141,7 +141,7 @@
         .social-links a:hover { color: var(--accent-color); transform: scale(1.2); }
         
         /* Pop-up Styles */
-        .popup { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.9); background: var(--secondary-color); color: var(--heading-color); padding: 2rem 3rem; border-radius: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); z-index: 200; opacity: 0; pointer-events: none; transition: opacity 0.3s ease, transform 0.3s ease; }
+        .popup { position: fixed; top: 20%; left: 50%; transform: translate(-50%, -50%) scale(0.9); background: var(--secondary-color); color: var(--heading-color); padding: 2rem 3rem; border-radius: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); z-index: 200; opacity: 0; pointer-events: none; transition: all 0.3s ease; }
         .popup.active { opacity: 1; transform: translate(-50%, -50%) scale(1); pointer-events: all; }
         
         footer { text-align: center; padding: 2rem; background: var(--bg-color); }
@@ -181,7 +181,7 @@
     </header>
 
     <main>
-        <section class="hero">
+        <section class="hero" id="hero">
             <div class="hero-content">
                 <h1>Your Journey in Code Starts Here.</h1>
                 <p>A curated collection of the best platforms and tools to master web development, from beginner to pro.</p>
@@ -202,10 +202,10 @@
             <h2>Learning Paths & Platforms</h2>
             <div class="resource-grid">
                 <div class="resource-card"><h3>FreeCodeCamp</h3><p>A non-profit with a full curriculum, thousands of hours of content, and certifications. All for free.</p><a href="https://www.freecodecamp.org/" target="_blank" class="card-link">Visit Site</a></div>
-                <div class="resource-card"><h3> W3Schools</h3><p>Well organized and easy to understand Web building tutorials with lots of examples of how to use HTML, CSS, JavaScript, SQL, Python, PHP, Bootstrap, Java, ...</p><a href=" https://www.w3schools.com" target="_blank" class="card-link">Visit Site</a></div>
+                <div class="resource-card"><h3>W3Schools</h3><p>Well organized and easy to understand Web building tutorials with lots of examples of how to use HTML, CSS, JavaScript, and more.</p><a href="https://www.w3schools.com" target="_blank" class="card-link">Visit Site</a></div>
                 <div class="resource-card"><h3>MDN Web Docs</h3><p>The official documentation for web technologies. The ultimate reference for any web developer.</p><a href="https://developer.mozilla.org/" target="_blank" class="card-link">Visit Site</a></div>
-                <div class="resource-card"> <h3> GeeksforGeeks</h3><p> Your All-in-One Learning Portal. It contains well written, well thought and well explained computer science and programming articles, quizzes and practice/competitive programming/company interview Questions.</p><a href="https://www.geeksforgeeks.org/ " target="_blank" class="card-link">Visit Site</a> </div>
-                <div class="resource-card"><h3>CodeAcademy </h3><p>Codecademy is an American online interactive platform that offers free coding classes in 13 different programming languages including Python, Java, Go, JavaScript, Ruby, SQL, C++, C#, Lua, and Swift, as well as markup languages HTML and CSS.</p> <a href="https://www.googleadservices.com/pagead/aclk?sa=L&ai=DChsSEwjtpbyQ47SOAxWDkVAGHYk6BJoYACICCAEQABoCZGc&co=1&gclid=CjwKCAjw7MLDBhAuEiwAIeXGIT_0LvQAdp7gS1b8NnEynHMiMi6Ouu95cmXZ_5tizS9WotX208MKjBoCjAMQAvD_BwE&ohost=www.google.com&cid=CAESVuD2rkoNYiaK_xFaRMH7LqJeS3lGZHxS9VUYkcENaNBuH1dvhQpKUPzSx2AVwmDHKOcgEGK7SZZwMf1tRzjh-5xiwJgnDMueflByTOwJp9G1d7txmfts&category=acrcp_v1_40&sig=AOD64_1tM7hysbUVwhLlDxcBd2HmDtrw2w&q&adurl&ved=2ahUKEwjjqLiQ47SOAxUAUUEAHR1dOtAQ0Qx6BAgKEAE " target="_blank" class="card-link">Visit Site</a></div>
+                <div class="resource-card"><h3>GeeksforGeeks</h3><p>Your All-in-One Learning Portal for computer science and programming articles, quizzes, and practice questions.</p><a href="https://www.geeksforgeeks.org/" target="_blank" class="card-link">Visit Site</a></div>
+                <div class="resource-card"><h3>Codecademy</h3><p>An online interactive platform that offers free coding classes in 13 different programming languages and markup languages.</p><a href="https://www.codecademy.com/" target="_blank" class="card-link">Visit Site</a></div>
                 <div class="resource-card"><h3>Kevin Powell (YouTube)</h3><p>A channel dedicated to helping you "fall in love with CSS." Fantastic tutorials and tips.</p><a href="https://www.youtube.com/@KevinPowell" target="_blank" class="card-link">Visit Site</a></div>
             </div>
         </section>
@@ -213,9 +213,9 @@
         <section id="projects" class="content-section">
             <h2>My Recent Work</h2>
             <div class="project-grid">
-                <div class="project-card"><div class="project-image"><img src="https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?auto=format&fit=crop&w=1600&q=80" alt="Project One Screenshot"></div><div class="project-info"><h3>(The Quiz Hub)</h3><p>A learning educational webpage for various level of education</p><div class="project-links"><a href="https://pretty49.github.io/my-quiz/" target="_blank" class="project-btn-single"><i class="fas fa-external-link-alt"></i> View Project</a></div></div></div>
-                <div class="project-card"><div class="project-image"><img src="https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?auto=format&fit=crop&w=1600&q=80" alt="Project Two Screenshot"></div><div class="project-info"><h3>(The Nook Library)</h3><p>A poetic library of various poet</p><div class="project-links"><a href="https://pretty49.github.io/my-library/" target="_blank" class="project-btn-single"><i class="fas fa-external-link-alt"></i> View Project</a></div></div></div>
-                <div class="project-card"><div class="project-image"><img src="https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?auto=format&fit=crop&w=1600&q=80" alt="Project Three Screenshot"></div><div class="project-info"><h3>(To-Do-List)</h3><p>An aidind To-Do-List for markerters, Students and Bussiness regulators</p><div class="project-links"><a href="https://pretty49.github.io/todo-app/" target="_blank" class="project-btn-single"><i class="fas fa-external-link-alt"></i> View Project</a></div></div></div>
+                <div class="project-card"><div class="project-image"><img src="https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?auto=format&fit=crop&w=1600&q=80" alt="Project One Screenshot"></div><div class="project-info"><h3>The Quiz Hub</h3><p>A learning educational webpage for various level of education.</p><div class="project-links"><a href="https://pretty49.github.io/my-quiz/" target="_blank" class="project-btn-single"><i class="fas fa-external-link-alt"></i> View Project</a></div></div></div>
+                <div class="project-card"><div class="project-image"><img src="https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?auto=format&fit=crop&w=1600&q=80" alt="Project Two Screenshot"></div><div class="project-info"><h3>The Nook Library</h3><p>A poetic library of various poet.</p><div class="project-links"><a href="https://pretty49.github.io/my-library/" target="_blank" class="project-btn-single"><i class="fas fa-external-link-alt"></i> View Project</a></div></div></div>
+                <div class="project-card"><div class="project-image"><img src="https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?auto=format&fit=crop&w=1600&q=80" alt="Project Three Screenshot"></div><div class="project-info"><h3>To-Do-List</h3><p>An aiding To-Do-List for marketers, students, and business regulators.</p><div class="project-links"><a href="https://pretty49.github.io/todo-app/" target="_blank" class="project-btn-single"><i class="fas fa-external-link-alt"></i> View Project</a></div></div></div>
             </div>
         </section>
 
@@ -251,7 +251,7 @@
             <div class="social-links">
                 <a href="https://www.instagram.com/limscobeauty18" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
                 <a href="https://www.threads.net/@limscobeauty18" target="_blank" aria-label="Threads"><i class="fab fa-threads"></i></a>
-                <a href="https://wa.me/07049111844" target="_blank" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                <a href="https://wa.me/2347049111844" target="_blank" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
                 <a href="https://www.facebook.com/Halima Masud" target="_blank" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
             </div>
         </section>
@@ -263,16 +263,17 @@
     
     <script>
         // --- CONFIGURATION ---
-        const myWhatsAppNumber = '2347049111844'; // <-- REPLACE THIS WITH YOUR NUMBER
+        const myWhatsAppNumber = '2347049111844'; // <-- Your WhatsApp Number Here
 
         // --- DOM ELEMENTS ---
+        const heroSection = document.getElementById('hero');
         const contentSections = document.querySelectorAll('.content-section');
         const navButtons = document.querySelectorAll('[data-section]');
         const logoButton = document.querySelector('.logo');
         const interestForm = document.getElementById('interest-form');
         const thanksPopup = document.getElementById('thanks-popup');
         const hamburger = document.querySelector('.hamburger');
-        const navLinks = document.querySelector('.nav-links');
+        const navLinksList = document.querySelector('.nav-links');
         const canvas = document.getElementById('background-canvas');
         const ctx = canvas.getContext('2d');
 
@@ -280,33 +281,31 @@
         let animationFrameId;
 
         // --- FUNCTIONS ---
-        function showSection(sectionId, isInitialLoad = false) {
+        function showSection(sectionId) {
+            const allNavLinks = document.querySelectorAll('.nav-links a');
+            
+            // Hide hero and all content sections
+            heroSection.style.display = 'none';
             contentSections.forEach(section => { section.style.display = 'none'; });
-            navButtons.forEach(btn => {
-                const link = btn.tagName === 'A' ? btn : btn.querySelector('a');
-                if (link) link.classList.remove('active-link');
-            });
+            allNavLinks.forEach(link => link.classList.remove('active-link'));
 
             if (sectionId) {
                 const activeSection = document.getElementById(sectionId);
                 if (activeSection) {
                     activeSection.style.display = 'block';
-                    // Add active class to the corresponding nav link
                     const activeLink = document.querySelector(`.nav-links a[data-section="${sectionId}"]`);
                     if(activeLink) activeLink.classList.add('active-link');
                 }
-            }
-             // Scroll to top of the page when a section is shown, except for the initial load
-            if (!isInitialLoad) {
-                window.scrollTo({ top: 0, behavior: 'smooth' });
+            } else {
+                // If no sectionId, show the hero (home view)
+                heroSection.style.display = 'flex';
             }
         }
 
         function handleNavClick(event) {
             const sectionId = event.currentTarget.getAttribute('data-section');
             showSection(sectionId);
-            // Close mobile menu if open
-            navLinks.classList.remove('active');
+            navLinksList.classList.remove('active');
             hamburger.classList.remove('toggle');
         }
 
@@ -335,7 +334,7 @@
 
         // --- CANVAS ANIMATION ---
         let particlesArray;
-        class Particle { /* ... same as before */
+        class Particle {
              constructor(x, y, dX, dY, size) { this.x = x; this.y = y; this.directionX = dX; this.directionY = dY; this.size = size; this.hue = Math.random() * 360; }
             draw() { ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fillStyle = `hsl(${this.hue}, 100%, 50%)`; ctx.fill(); }
             update() {
@@ -368,17 +367,16 @@
 
         // --- EVENT LISTENERS ---
         navButtons.forEach(button => button.addEventListener('click', handleNavClick));
-        logoButton.addEventListener('click', () => showSection(null)); // Logo acts as home button
+        logoButton.addEventListener('click', () => showSection(null));
         interestForm.addEventListener('submit', handleFormSubmit);
         
         hamburger.addEventListener('click', () => {
-            navLinks.classList.toggle('active');
+            navLinksList.classList.toggle('active');
             hamburger.classList.toggle('toggle');
         });
         
         window.addEventListener('resize', initCanvas);
-
-        // Professional Upgrade: Pause animation when tab is not visible
+        
         document.addEventListener("visibilitychange", () => {
             if (document.hidden) {
                 cancelAnimationFrame(animationFrameId);
@@ -389,7 +387,7 @@
 
         // --- INITIALIZATION ---
         document.addEventListener('DOMContentLoaded', () => {
-            showSection('about', true); // Show 'About' section by default on load
+            showSection(null); // Show only the Hero section on load
             showWelcomePopup();
             initCanvas();
             animate();
